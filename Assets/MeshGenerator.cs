@@ -44,7 +44,8 @@ public class MeshGenerator : MonoBehaviour
         {
             for (int x = 0; x <= xSize; x++)
             {
-                vertices[i] = new Vector3(x, 0, z);
+                float y = Mathf.PerlinNoise(x*.3f, z*.3f) * 2f;
+                vertices[i] = new Vector3(x, y, z);
                 i++;
             }
         }
@@ -68,7 +69,7 @@ public class MeshGenerator : MonoBehaviour
                 vert++;
                 tris += 6;
 
-                yield return new WaitForSeconds(.1f); //Fjern hvis det skal gå hurtigt
+                yield return new WaitForSeconds(.05f); //Fjern hvis det skal gå hurtigt
             }
             vert++;
         }
