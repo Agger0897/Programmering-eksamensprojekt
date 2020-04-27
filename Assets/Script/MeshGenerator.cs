@@ -10,15 +10,12 @@ public class MeshGenerator : MonoBehaviour
 
     Vector3[] vertices;
     private int[] triangles;
-    Color[] colors;
 
     public float amplitude = 2f;
 
     //Bestemmer størrelsen på grid
     public int XSize;
     public int ZSize;
-
-    public Gradient gradient;
 
     private float minTerrainHeight;
     private float maxTerrainHeight;
@@ -28,27 +25,24 @@ public class MeshGenerator : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        
         //Laver et nyt mesh som kan bruges
         mesh = new Mesh();
         //Gør så vi kan tilføje det nye mesh til meshfilteret
         GetComponent<MeshFilter>().mesh = mesh;
-        
-        
-
     }
 
     // Update is called once per frame
     private void Update()
     {
         CreateShape();
-        UpdateMesh(); 
-        GetComponent<MeshCollider>().sharedMesh = mesh;
+        UpdateMesh();
+
         mesh.Optimize();
+        GetComponent<MeshCollider>().sharedMesh = mesh;
     }
     private void CreateShape() //Void hvis det skal gå hurtigere
     {
-        
+
         //Skaber alle hjørnerne 
         //og da der altid vil være et hjørne mere end længden på griddet lægges der 1 til
         vertices = new Vector3[(XSize + 1) * (ZSize + 1)];
@@ -59,18 +53,8 @@ public class MeshGenerator : MonoBehaviour
         {
             for (int x = 0; x <= XSize; x++)
             {
-                float y = Mathf.PerlinNoise(x*.5f, z*.3f) * amplitude;
+                float y = Mathf.PerlinNoise(x * .5f, z * .3f) * amplitude;
                 vertices[i] = new Vector3(x, y, z);
-
-                //if (y > maxTerrainHeight)
-                //{
-                //    maxTerrainHeight = y;
-                //}
-                //if (y< minTerrainHeight)
-                //{
-                //    minTerrainHeight = y;
-                //}
-
                 i++;
             }
         }
@@ -97,27 +81,12 @@ public class MeshGenerator : MonoBehaviour
             }
             vertexIndex++;
         }
-
-        //colors = new Color[vertices.Length];
-
-        //for (int i = 0, z = 0; z <= ZSize; z++)
-        //{
-        //    for (int x = 0; x <= XSize; x++)
-        //    {
-        //        float height = Mathf.InverseLerp(minTerrainHeight,maxTerrainHeight, vertices[i].y);
-        //        colors[i] = gradient.Evaluate(height);
-        //        i++;
-        //    }
-        //}
-        
-
     }
     public void UpdateMesh()
     {
         mesh.Clear();
         mesh.vertices = vertices;
         mesh.triangles = triangles;
-        mesh.colors = colors;
 
         //Gør så lyset fungerer ordentligt på meshet
         mesh.RecalculateNormals();
@@ -132,13 +101,13 @@ public class MeshGenerator : MonoBehaviour
         }
         if (activateGizmos == true)
         {
-            //Løb alle vertices igennem og lav en cirkel omkring dem
+            //Løb alle vertices igennem og lav en cirkel på punkterne
             for (int i = 0; i < vertices.Length; i++)
             {
                 Gizmos.DrawSphere(vertices[i], .1f);
             }
         }
-        
+
     }
 
 }
