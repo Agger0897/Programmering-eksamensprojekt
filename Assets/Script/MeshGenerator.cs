@@ -23,8 +23,10 @@ public class MeshGenerator : MonoBehaviour
     private float minTerrainHeight;
     private float maxTerrainHeight;
 
+    public bool activateGizmos;
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         
         //Laver et nyt mesh som kan bruges
@@ -37,14 +39,14 @@ public class MeshGenerator : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         CreateShape();
-        UpdateMesh(); //Skal være i Void Start() hvis det skal gå hurtigt
+        UpdateMesh(); 
         GetComponent<MeshCollider>().sharedMesh = mesh;
         mesh.Optimize();
     }
-    void CreateShape() //Void hvis det skal gå hurtigere
+    private void CreateShape() //Void hvis det skal gå hurtigere
     {
         
         //Skaber alle hjørnerne 
@@ -128,12 +130,15 @@ public class MeshGenerator : MonoBehaviour
         {
             return;
         }
-
-        //Løb alle vertices igennem og lav en cirkel omkring dem
-        for (int i = 0; i < vertices.Length; i++)
+        if (activateGizmos == true)
         {
-            Gizmos.DrawSphere(vertices[i], .1f);
+            //Løb alle vertices igennem og lav en cirkel omkring dem
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                Gizmos.DrawSphere(vertices[i], .1f);
+            }
         }
+        
     }
 
 }
