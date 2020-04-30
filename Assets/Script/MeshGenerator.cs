@@ -5,30 +5,23 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 public class MeshGenerator : MonoBehaviour
 {
-    Mesh mesh;
-    MeshCollider meshCollider = null;
+    Mesh mesh;                                      //Meshet der bruges til terrænet
 
-    Vector3[] vertices;
-    private int[] triangles;
+    Vector3[] vertices;                             //Liste over alle punkterne 
+    private int[] triangles;                        //Liste over alle trekanterne 
 
-    public float amplitude = 2f;
+    public float amplitude = 2f;                    //Gør at der kan manipuleres med y-aksen i inspektoren 
+    
+    public int XSize;                               //Bestemmer størrelsen på X-aksen af griddet 
+    public int ZSize;                               //Bestemmer størrelsen på Z-aksen af griddet
 
-    //Bestemmer størrelsen på grid
-    public int XSize;
-    public int ZSize;
-
-    private float minTerrainHeight;
-    private float maxTerrainHeight;
-
-    public bool activateGizmos;
+    public bool activateGizmos;                     //Bool der gør at punkterne kan visualiseres i scenen
 
     // Start is called before the first frame update
     private void Start()
     {
-        //Laver et nyt mesh som kan bruges
-        mesh = new Mesh();
-        //Gør så vi kan tilføje det nye mesh til meshfilteret
-        GetComponent<MeshFilter>().mesh = mesh;
+        mesh = new Mesh();                          //Laver et nyt mesh som kan bruges
+        GetComponent<MeshFilter>().mesh = mesh;     //Gør så vi kan tilføje det nye mesh til meshfilteret
     }
 
     // Update is called once per frame
@@ -50,25 +43,31 @@ public class MeshGenerator : MonoBehaviour
         {
             for (int x = 0; x <= XSize; x++)
             {
-                float y = Mathf.PerlinNoise(x * .5f, z * .3f) * amplitude;
-                vertices[i] = new Vector3(x, y, z);
-                i++;
+                float y = Mathf.PerlinNoise(x * .5f, z * .3f) * amplitude;      //Her udregnes y-koordinaten for alle punkterne
+                vertices[i] = new Vector3(x, y, z);                             //Her genereres dataen til hver punkt
+                i++;                                                            //Går til det næste element i listen
             }
         }
 
+        //Liste over alle trekanterne
+        //gange 6 da 2 trekanter kræver 6 punkter
         triangles = new int[XSize * ZSize * 6];
+        
+        int vertexIndex = 0;                //Nulstiller listen over alle punkterne
+        int triangleIndex = 0;              //Nulstiller listen over alle trekanterne
 
-        int vertexIndex = 0;
-        int triangleIndex = 0;
-
+        //Går z-aksen igennem
         for (int z = 0; z < ZSize; z++)
         {
+            //Går x-aksen igennem
             for (int x = 0; x < XSize; x++)
             {
+                //En trekant
                 triangles[triangleIndex + 0] = vertexIndex + 0;
                 triangles[triangleIndex + 1] = vertexIndex + XSize + 1;
                 triangles[triangleIndex + 2] = vertexIndex + 1;
 
+                //En anden trekant som sammen med den ande trekant danner en firkant
                 triangles[triangleIndex + 3] = vertexIndex + 1;
                 triangles[triangleIndex + 4] = vertexIndex + XSize + 1;
                 triangles[triangleIndex + 5] = vertexIndex + XSize + 2;
@@ -81,15 +80,14 @@ public class MeshGenerator : MonoBehaviour
     }
     public void UpdateMesh()
     {
-        mesh.Clear();
-        mesh.vertices = vertices;
-        mesh.triangles = triangles;
+        mesh.Clear();                                                           //Fjerner tidligere data fra meshet        
+        mesh.vertices = vertices;                                               //Placerer alle punkterne i scenen
+        mesh.triangles = triangles;                                             //Placerer alle trekanterne i scenen
 
-        //Gør så lyset fungerer ordentligt på meshet
-        mesh.RecalculateNormals();
-        mesh.RecalculateBounds();
-        MeshCollider meshCollider = gameObject.GetComponent<MeshCollider>();
-        meshCollider.sharedMesh = mesh;
+        mesh.RecalculateNormals();                                              //Gør så lyset fungerer ordentligt på meshet
+        mesh.RecalculateBounds();                                               //Gør så terrænet collider ordentligt med spilleren
+        MeshCollider meshCollider = gameObject.GetComponent<MeshCollider>();    //Henter meshets collider
+        meshCollider.sharedMesh = mesh;                                         //Gør så terrænet collider med spilleren
     }
 
     private void OnDrawGizmos()
@@ -99,6 +97,7 @@ public class MeshGenerator : MonoBehaviour
         {
             return;
         }
+        
         if (activateGizmos == true)
         {
             //Løb alle vertices igennem og lav en cirkel på punkterne
