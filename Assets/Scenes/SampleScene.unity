@@ -275,7 +275,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 897756169}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 27.9, y: 4.87, z: 19.9}
+  m_LocalPosition: {x: 0.5, y: 4, z: 1}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children:
   - {fileID: 1042450509}
@@ -504,7 +504,6 @@ GameObject:
   - component: {fileID: 1592792794}
   - component: {fileID: 1592792793}
   - component: {fileID: 1592792797}
-  - component: {fileID: 1592792798}
   m_Layer: 8
   m_Name: Mesh Generator
   m_TagString: Untagged
@@ -525,8 +524,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amplitude: 2
-  XSize: 75
-  ZSize: 75
+  XSize: 100
+  ZSize: 100
   activateGizmos: 0
 --- !u!23 &1592792794
 MeshRenderer:
@@ -582,7 +581,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1592792792}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -602,17 +601,3 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 0}
---- !u!114 &1592792798
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1592792792}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 54cc5c3e44d24344f86b95ecc3c4d568, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playButtonTime: 0
-  startTime: 0

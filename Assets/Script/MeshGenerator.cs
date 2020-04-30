@@ -36,13 +36,10 @@ public class MeshGenerator : MonoBehaviour
     {
         CreateShape();
         UpdateMesh();
-
         mesh.Optimize();
-        GetComponent<MeshCollider>().sharedMesh = mesh;
     }
     private void CreateShape() //Void hvis det skal gå hurtigere
     {
-
         //Skaber alle hjørnerne 
         //og da der altid vil være et hjørne mere end længden på griddet lægges der 1 til
         vertices = new Vector3[(XSize + 1) * (ZSize + 1)];
@@ -90,6 +87,9 @@ public class MeshGenerator : MonoBehaviour
 
         //Gør så lyset fungerer ordentligt på meshet
         mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+        MeshCollider meshCollider = gameObject.GetComponent<MeshCollider>();
+        meshCollider.sharedMesh = mesh;
     }
 
     private void OnDrawGizmos()
